@@ -17,16 +17,10 @@ defmodule Rocketpay.Account do
       timestamps()
   end
 
-  def changeset(params) do
-    %__MODULE__{}
+  def changeset(struct \\ %__MODULE__{}, params) do
+    struct
     |> cast(params, @required_params)
     |> validate_required(@required_params)
     |> check_constraint(:balance, name: :balance_must_be_positive_or_zero)
   end
-
-  defp put_password_hash(%Changeset{valid?: true, changes: %{password: password}} = changeset) do
-    change(changeset, Bcrypt.add_hash(password))
-  end
-
-  defp put_password_hash(changeset), do: changeset
 end
